@@ -3,7 +3,8 @@
  * Adiciona automaticamente o JWT no header Authorization
  */
 
-const API_BASE_URL = 'http://127.0.0.1:3000';
+// Importa configuração do ambiente (disponível globalmente)
+const API_BASE_URL = window.AppConfig ? window.AppConfig.getApiBaseUrl() : 'http://127.0.0.1:3000';
 
 class ApiClient {
   constructor() {
