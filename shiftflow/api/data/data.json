@@ -1,0 +1,280 @@
+{
+  "users": [
+    {
+      "id": "admin-001",
+      "name": "Administrador do Sistema",
+      "username": "admin",
+      "passwordHash": "e86f78a8a3caf0b60d8e74e5942aa6d86dc150cd3c03338aef25b7d2d7e3acc7",
+      "role": "admin",
+      "active": true,
+      "createdAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "emp-001",
+      "name": "Carlos Silva",
+      "username": "carlos",
+      "passwordHash": "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918",
+      "role": "employee",
+      "active": true,
+      "createdAt": "2024-01-15T10:00:00.000Z"
+    },
+    {
+      "id": "emp-002",
+      "name": "Maria Santos",
+      "username": "maria",
+      "passwordHash": "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918",
+      "role": "employee",
+      "active": true,
+      "createdAt": "2024-01-20T14:30:00.000Z"
+    },
+    {
+      "id": "emp-003",
+      "name": "João Oliveira",
+      "username": "joao",
+      "passwordHash": "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918",
+      "role": "employee",
+      "active": true,
+      "createdAt": "2024-02-01T08:00:00.000Z"
+    },
+    {
+      "id": "5f7541bf-4f93-4b73-a918-7e0179f45896",
+      "name": "Daniela",
+      "username": "Daniela",
+      "passwordHash": "289160db0d9f39f9ae1754c4ec9c16f90b50e32e09c5fb5481ae642b3d3d1a36",
+      "role": "employee",
+      "active": true,
+      "createdAt": "2026-04-29T00:45:24.595Z"
+    }
+  ],
+  "schedules": [
+    {
+      "id": "sch-001",
+      "employeeId": "emp-001",
+      "date": "2026-04-28",
+      "startTime": "08:00",
+      "endTime": "16:00",
+      "position": "Atendente",
+      "notes": "Turno matinal",
+      "status": "approved",
+      "rejectionReason": "",
+      "createdAt": "2026-04-20T10:00:00.000Z",
+      "updatedAt": "2026-04-22T15:30:00.000Z"
+    },
+    {
+      "id": "sch-002",
+      "employeeId": "emp-002",
+      "date": "2026-04-28",
+      "startTime": "14:00",
+      "endTime": "22:00",
+      "position": "Atendente",
+      "notes": "Turno vespertino",
+      "status": "pending",
+      "rejectionReason": "",
+      "createdAt": "2026-04-20T11:00:00.000Z",
+      "updatedAt": "2026-04-20T11:00:00.000Z"
+    },
+    {
+      "id": "sch-003",
+      "employeeId": "emp-003",
+      "date": "2026-04-29",
+      "startTime": "08:00",
+      "endTime": "16:00",
+      "position": "Caixa",
+      "notes": "Turno matinal",
+      "status": "approved",
+      "rejectionReason": "",
+      "createdAt": "2026-04-21T09:00:00.000Z",
+      "updatedAt": "2026-04-23T10:00:00.000Z"
+    },
+    {
+      "id": "sch-004",
+      "employeeId": "emp-001",
+      "date": "2026-04-29",
+      "startTime": "14:00",
+      "endTime": "22:00",
+      "position": "Atendente",
+      "notes": "Turno vespertino",
+      "status": "pending",
+      "rejectionReason": "",
+      "createdAt": "2026-04-21T10:00:00.000Z",
+      "updatedAt": "2026-04-21T10:00:00.000Z"
+    },
+    {
+      "id": "sch-005",
+      "employeeId": "emp-002",
+      "date": "2026-04-30",
+      "startTime": "08:00",
+      "endTime": "16:00",
+      "position": "Atendente",
+      "notes": "Turno matinal",
+      "status": "pending",
+      "rejectionReason": "",
+      "createdAt": "2026-04-22T08:00:00.000Z",
+      "updatedAt": "2026-04-22T08:00:00.000Z"
+    },
+    {
+      "id": "sch-006",
+      "employeeId": "emp-003",
+      "date": "2026-04-30",
+      "startTime": "14:00",
+      "endTime": "22:00",
+      "position": "Caixa",
+      "notes": "Turno vespertino",
+      "status": "approved",
+      "rejectionReason": "",
+      "createdAt": "2026-04-22T09:00:00.000Z",
+      "updatedAt": "2026-04-24T11:00:00.000Z"
+    },
+    {
+      "id": "sch-007",
+      "employeeId": "emp-001",
+      "date": "2026-05-01",
+      "startTime": "08:00",
+      "endTime": "16:00",
+      "position": "Atendente",
+      "notes": "Feriado - Turno matinal",
+      "status": "approved",
+      "rejectionReason": "",
+      "createdAt": "2026-04-23T10:00:00.000Z",
+      "updatedAt": "2026-04-25T14:00:00.000Z"
+    },
+    {
+      "id": "sch-008",
+      "employeeId": "emp-002",
+      "date": "2026-05-02",
+      "startTime": "08:00",
+      "endTime": "16:00",
+      "position": "Atendente",
+      "notes": "Turno matinal",
+      "status": "pending",
+      "rejectionReason": "",
+      "createdAt": "2026-04-24T08:00:00.000Z",
+      "updatedAt": "2026-04-24T08:00:00.000Z"
+    },
+    {
+      "id": "sch-009",
+      "employeeId": "emp-003",
+      "date": "2026-05-03",
+      "startTime": "08:00",
+      "endTime": "16:00",
+      "position": "Caixa",
+      "notes": "Turno matinal",
+      "status": "pending",
+      "rejectionReason": "",
+      "createdAt": "2026-04-25T09:00:00.000Z",
+      "updatedAt": "2026-04-25T09:00:00.000Z"
+    },
+    {
+      "id": "sch-010",
+      "employeeId": "emp-001",
+      "date": "2026-05-04",
+      "startTime": "14:00",
+      "endTime": "22:00",
+      "position": "Atendente",
+      "notes": "Turno vespertino",
+      "status": "pending",
+      "rejectionReason": "",
+      "createdAt": "2026-04-26T10:00:00.000Z",
+      "updatedAt": "2026-04-26T10:00:00.000Z"
+    },
+    {
+      "id": "sch-011",
+      "employeeId": "emp-002",
+      "date": "2026-05-05",
+      "startTime": "08:00",
+      "endTime": "16:00",
+      "position": "Atendente",
+      "notes": "Turno matinal",
+      "status": "pending",
+      "rejectionReason": "",
+      "createdAt": "2026-04-27T08:00:00.000Z",
+      "updatedAt": "2026-04-27T08:00:00.000Z"
+    },
+    {
+      "id": "sch-012",
+      "employeeId": "emp-003",
+      "date": "2026-05-06",
+      "startTime": "14:00",
+      "endTime": "22:00",
+      "position": "Caixa",
+      "notes": "Turno vespertino",
+      "status": "pending",
+      "rejectionReason": "",
+      "createdAt": "2026-04-27T09:00:00.000Z",
+      "updatedAt": "2026-04-27T09:00:00.000Z"
+    },
+    {
+      "id": "sch-013",
+      "employeeId": "emp-001",
+      "date": "2026-05-07",
+      "startTime": "08:00",
+      "endTime": "16:00",
+      "position": "Atendente",
+      "notes": "Turno matinal",
+      "status": "pending",
+      "rejectionReason": "",
+      "createdAt": "2026-04-28T10:00:00.000Z",
+      "updatedAt": "2026-04-28T10:00:00.000Z"
+    },
+    {
+      "id": "sch-014",
+      "employeeId": "emp-002",
+      "date": "2026-05-08",
+      "startTime": "14:00",
+      "endTime": "22:00",
+      "position": "Atendente",
+      "notes": "Turno vespertino",
+      "status": "pending",
+      "rejectionReason": "",
+      "createdAt": "2026-04-28T11:00:00.000Z",
+      "updatedAt": "2026-04-28T11:00:00.000Z"
+    },
+    {
+      "id": "sch-015",
+      "employeeId": "emp-003",
+      "date": "2026-05-09",
+      "startTime": "08:00",
+      "endTime": "16:00",
+      "position": "Caixa",
+      "notes": "Turno matinal",
+      "status": "pending",
+      "rejectionReason": "",
+      "createdAt": "2026-04-28T12:00:00.000Z",
+      "updatedAt": "2026-04-28T12:00:00.000Z"
+    },
+    {
+      "id": "7782a594-e121-493c-9191-a140efad23fd",
+      "employeeId": "5f7541bf-4f93-4b73-a918-7e0179f45896",
+      "date": "2026-04-30",
+      "startTime": "14:00",
+      "endTime": "01:00",
+      "position": "Atendimento",
+      "notes": "",
+      "status": "approved",
+      "rejectionReason": "",
+      "createdAt": "2026-04-29T12:14:12.019Z",
+      "updatedAt": "2026-04-29T12:18:59.977Z"
+    }
+  ],
+  "alerts": [
+    {
+      "id": "alert-001",
+      "date": "2026-05-01",
+      "title": "Dia do Trabalho",
+      "description": "Feriado nacional - Dia do Trabalho",
+      "type": "holiday",
+      "createdBy": "admin-001",
+      "createdAt": "2026-04-01T00:00:00.000Z"
+    },
+    {
+      "id": "alert-002",
+      "date": "2026-05-15",
+      "title": "Dia das Mães",
+      "description": "Esperado alto movimento - Dia das Mães",
+      "type": "high_traffic",
+      "createdBy": "admin-001",
+      "createdAt": "2026-04-10T00:00:00.000Z"
+    }
+  ],
+  "notifications": []
+}
