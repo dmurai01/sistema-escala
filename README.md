@@ -78,45 +78,50 @@ A interface estará disponível em: `http://localhost:5500`
 
 ### Autenticação
 - `POST /api/auth/login` - Login
-- `GET /api/auth/me` - Dados do usuário
-
-### Escalas
-- `GET /api/schedules` - Listar escalas
-- `POST /api/schedules` - Criar escala (admin)
-- `PATCH /api/schedules/:id/approve` - Aprovar escala
-- `PATCH /api/schedules/:id/reject` - Reprovar escala
+- `POST /api/auth/logout` - Logout
+- `GET /api/auth/me` - Dados do usuário atual
 
 ### Usuários
-- `GET /api/users` - Listar usuários (admin)
-- `POST /api/users` - Criar usuário (admin)
+- `GET /api/users` - Listar usuários
+- `GET /api/users/:id` - Detalhes do usuário
+- `POST /api/users` - Criar usuário
+- `PUT /api/users/:id` - Atualizar usuário
+- `DELETE /api/users/:id` - Excluir usuário
 
-### Alertas
-- `GET /api/alerts` - Listar alertas
-- `POST /api/alerts` - Criar alerta (admin)
+### Escalas
+- `GET /api/shifts` - Listar escalas
+- `GET /api/shifts/:id` - Detalhes da escala
+- `POST /api/shifts` - Criar escala
+- `PUT /api/shifts/:id` - Atualizar escala
+- `DELETE /api/shifts/:id` - Excluir escala
 
-### Admin
-- `GET /api/admin/export` - Exportar dados
-- `POST /api/admin/import` - Importar dados
+### Turnos
+- `GET /api/shifts/:shiftId/shifts` - Listar turnos de uma escala
+- `POST /api/shifts/:shiftId/shifts` - Criar turno
+- `PUT /api/shifts/:shiftId/shifts/:id` - Atualizar turno
+- `DELETE /api/shifts/:shiftId/shifts/:id` - Excluir turno
 
 ---
 
 ## 🛠️ Tecnologias
 
-### API
+### Backend
 - Node.js
 - Express.js
-- JWT (autenticação)
+- JWT (JSON Web Tokens)
 - SHA-256 (hash de senhas)
-- Swagger (documentação)
 
-### Web
+### Frontend
 - HTML5
 - CSS3
-- JavaScript ES6+
-- Fetch API
+- JavaScript (Vanilla)
+- Hash-based SPA routing
+
+### Armazenamento
+- data.json (arquivo único)
 
 ---
 
-## 📝 Licença
+## 📄 Licença
 
-ISC
+MIT
