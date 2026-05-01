@@ -332,10 +332,32 @@ router.patch('/:id/approve', requireAdminOrEmployee, (req, res) => {
 
     storage.update('schedules', id, {
       status: 'approved',
+      approvedBy: req.user.id,
+      approvedByName: req.user.name,
+      approvedAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     });
 
     const updatedSchedule = storage.findById('schedules', id);
+
+    // Cria notificação quando admin aprova
+    if (req.user.role === 'admin') {
+      const notification = {
+        id: uuidv4(),
+        toUserId: schedule.employeeId,
+        fromUserId: req.user.id,
+        fromUserName: req.user.name,
+        type: 'approval_alert',
+        title: 'Escala aprovada pelo administrador',
+        message: `Sua escala foi aprovada por ${req.user.name}`,
+        scheduleId: id,
+        read: false,
+        resolved: false,
+        createdAt: new Date().toISOString()
+      };
+      storage.add('notifications', notification);
+    }
+
     res.json(updatedSchedule);
   } catch (error) {
     console.error('Erro ao aprovar escala:', error);
@@ -410,16 +432,21 @@ router.patch('/:id/reject', requireAdminOrEmployee, (req, res) => {
     storage.update('schedules', id, {
       status: 'rejected',
       rejectionReason: reason,
+      rejectedBy: req.user.id,
+      rejectedByName: req.user.name,
+      rejectedAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     });
 
     const updatedSchedule = storage.findById('schedules', id);
 
-    // Cria notificação para o admin
+    // Cria notificação
+    // Se quem reprovou foi o admin → notifica o employee
+    // Se quem reprovou foi o employee → notifica o admin
     const notification = {
       id: uuidv4(),
-      toUserId: 'admin', // O admin recebe a notificação
       fromUserId: req.user.id,
+      fromUserName: req.user.name,
       type: 'rejection_alert',
       message: `Escala reprovada por ${req.user.name}: ${reason}`,
       scheduleId: id,
@@ -428,11 +455,21 @@ router.patch('/:id/reject', requireAdminOrEmployee, (req, res) => {
       createdAt: new Date().toISOString()
     };
 
-    // Busca o admin para enviar notificação
     const users = storage.getCollection('users');
-    const admin = users.find(u => u.role === 'admin');
-    if (admin) {
-      notification.toUserId = admin.id;
+    if (req.user.role === 'admin') {
+      // Admin reprova → notifica o employee
+      notification.toUserId = schedule.employeeId;
+      notification.title = 'Escala reprovada pelo administrador';
+    } else {
+      // Employee reprova → notifica o admin
+      const admin = users.find(u => u.role === 'admin');
+      if (admin) {
+        notification.toUserId = admin.id;
+        notification.title = 'Escala reprovada por funcionário';
+      }
+    }
+
+    if (notification.toUserId) {
       storage.add('notifications', notification);
     }
 
