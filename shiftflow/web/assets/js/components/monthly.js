@@ -197,12 +197,13 @@ class MonthlyView {
              data-date="${dateStr}">
           <span class="day-number">${day}</span>
           <div class="day-chips">
-            ${filteredSchedules.slice(0, 2).map(s => `
-              <div class="day-chip" title="${s.employee?.name} - ${s.startTime} às ${s.endTime}">
-                ${s.employee?.name?.charAt(0) || '?'}
+            ${filteredSchedules.slice(0, 3).map(s => `
+              <div class="day-chip schedule-info-chip" title="${s.employee?.name} - ${s.startTime} às ${s.endTime}">
+                <span class="chip-name">${this.getFirstName(s.employee?.name)}</span>
+                <span class="chip-time">${s.startTime}</span>
               </div>
             `).join('')}
-            ${filteredSchedules.length > 2 ? `<span class="more">+${filteredSchedules.length - 2}</span>` : ''}
+            ${filteredSchedules.length > 3 ? `<span class="more">+${filteredSchedules.length - 3}</span>` : ''}
           </div>
           ${hasAlert ? '<span class="alert-indicator" title="' + dayAlerts[0].title + '">🔔</span>' : ''}
         </div>
@@ -292,6 +293,12 @@ class MonthlyView {
       rejected: 'Reprovado'
     };
     return labels[status] || status;
+  }
+
+  // Retorna o primeiro nome do funcionário
+  getFirstName(fullName) {
+    if (!fullName) return '?';
+    return fullName.split(' ')[0];
   }
 }
 

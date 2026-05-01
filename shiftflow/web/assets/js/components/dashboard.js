@@ -122,7 +122,12 @@ class Dashboard {
       return;
     }
 
-    container.innerHTML = todaySchedules.map(schedule => {
+    // Ordena as escalas por horário de entrada
+    const sortedSchedules = [...todaySchedules].sort((a, b) => {
+      return a.startTime.localeCompare(b.startTime);
+    });
+
+    container.innerHTML = sortedSchedules.map(schedule => {
       const isOwn = schedule.employeeId === user.id;
       const statusClass = this.getStatusClass(schedule.status);
       

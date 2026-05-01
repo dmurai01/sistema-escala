@@ -698,6 +698,29 @@ label {
   font-weight: 600;
 }
 
+/* Novo estilo para chips com nome e horário */
+.schedule-info-chip {
+  width: auto;
+  height: auto;
+  padding: 0.125rem 0.375rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.625rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.125rem;
+}
+
+.chip-name {
+  font-weight: 600;
+  font-size: 0.625rem;
+  line-height: 1;
+}
+
+.chip-time {
+  font-size: 0.5rem;
+  opacity: 0.8;
+}
+
 .alert-indicator {
   font-size: 0.75rem;
   margin-left: 0.25rem;

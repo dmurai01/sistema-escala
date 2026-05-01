@@ -119,11 +119,11 @@ class AdminPanel {
                 <div class="form-row">
                   <div class="form-group">
                     <label>Início</label>
-                    <input type="time" id="scheduleStartTime" required>
+                    <input type="time" id="scheduleStartTime" step="1800" required>
                   </div>
                   <div class="form-group">
                     <label>Fim</label>
-                    <input type="time" id="scheduleEndTime" required>
+                    <input type="time" id="scheduleEndTime" step="1800" required>
                   </div>
                 </div>
                 <div class="form-group">
@@ -577,11 +577,25 @@ class AdminPanel {
     document.getElementById('scheduleId').value = schedule?.id || '';
     document.getElementById('scheduleEmployee').value = schedule?.employeeId || '';
     document.getElementById('scheduleDate').value = schedule?.date || '';
-    document.getElementById('scheduleStartTime').value = schedule?.startTime || '';
-    document.getElementById('scheduleEndTime').value = schedule?.endTime || '';
+    
+    // Define valores padrão com minutos 00 ou 30 para novas escalas
+    const defaultStartTime = schedule?.startTime || this.getDefaultTime();
+    const defaultEndTime = schedule?.endTime || this.getDefaultTime(1);
+    
+    document.getElementById('scheduleStartTime').value = defaultStartTime;
+    document.getElementById('scheduleEndTime').value = defaultEndTime;
     document.getElementById('schedulePosition').value = schedule?.position || '';
     document.getElementById('scheduleNotes').value = schedule?.notes || '';
     document.getElementById('scheduleModal').style.display = 'block';
+  }
+
+  // Retorna hora com minutos 00 ou 30
+  getDefaultTime(hoursOffset = 0) {
+    const now = new Date();
+    now.setHours(now.getHours() + hoursOffset);
+    let hours = now.getHours();
+    const minutes = now.getMinutes() < 30 ? 0 : 30;
+    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
   }
 
   editSchedule(id) {
