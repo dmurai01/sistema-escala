@@ -146,10 +146,13 @@
       "endTime": "16:00",
       "position": "Atendente",
       "notes": "Turno matinal",
-      "status": "pending",
+      "status": "approved",
       "rejectionReason": "",
       "createdAt": "2026-04-24T08:00:00.000Z",
-      "updatedAt": "2026-04-24T08:00:00.000Z"
+      "updatedAt": "2026-05-01T13:08:06.367Z",
+      "approvedBy": "admin-001",
+      "approvedByName": "Administrador do Sistema",
+      "approvedAt": "2026-05-01T13:08:06.367Z"
     },
     {
       "id": "sch-009",
@@ -254,6 +257,70 @@
       "rejectionReason": "",
       "createdAt": "2026-04-29T12:14:12.019Z",
       "updatedAt": "2026-04-29T12:18:59.977Z"
+    },
+    {
+      "id": "7513c14c-c90e-40c8-95fd-05c4907b89bd",
+      "employeeId": "5f7541bf-4f93-4b73-a918-7e0179f45896",
+      "date": "2026-05-01",
+      "startTime": "16:00",
+      "endTime": "02:00",
+      "position": "Atendimento",
+      "notes": "",
+      "status": "approved",
+      "rejectionReason": "",
+      "createdAt": "2026-05-01T13:08:46.710Z",
+      "updatedAt": "2026-05-01T13:09:43.326Z",
+      "approvedBy": "5f7541bf-4f93-4b73-a918-7e0179f45896",
+      "approvedByName": "Daniela",
+      "approvedAt": "2026-05-01T13:09:43.326Z"
+    },
+    {
+      "id": "b382fec8-ef70-4ff5-bdb2-f86eb0b79a4a",
+      "employeeId": "emp-002",
+      "date": "2026-05-01",
+      "startTime": "13:00",
+      "endTime": "01:00",
+      "position": "Atendimento",
+      "notes": "",
+      "status": "approved",
+      "rejectionReason": "",
+      "createdAt": "2026-05-01T13:14:06.618Z",
+      "updatedAt": "2026-05-01T13:14:18.399Z",
+      "approvedBy": "admin-001",
+      "approvedByName": "Administrador do Sistema",
+      "approvedAt": "2026-05-01T13:14:18.399Z"
+    },
+    {
+      "id": "5f9010f6-903b-4112-9c6b-d041ba1e0845",
+      "employeeId": "emp-003",
+      "date": "2026-05-01",
+      "startTime": "15:15",
+      "endTime": "04:15",
+      "position": "Recepção",
+      "notes": "",
+      "status": "approved",
+      "rejectionReason": "",
+      "createdAt": "2026-05-01T13:15:13.754Z",
+      "updatedAt": "2026-05-01T13:15:24.036Z",
+      "approvedBy": "admin-001",
+      "approvedByName": "Administrador do Sistema",
+      "approvedAt": "2026-05-01T13:15:24.036Z"
+    },
+    {
+      "id": "21479c99-aea6-4192-bbb7-cce51e3ca035",
+      "employeeId": "5f7541bf-4f93-4b73-a918-7e0179f45896",
+      "date": "2026-05-01",
+      "startTime": "16:15",
+      "endTime": "17:15",
+      "position": "Atendimento",
+      "notes": "",
+      "status": "approved",
+      "rejectionReason": "",
+      "createdAt": "2026-05-01T13:15:48.664Z",
+      "updatedAt": "2026-05-01T13:15:55.424Z",
+      "approvedBy": "admin-001",
+      "approvedByName": "Administrador do Sistema",
+      "approvedAt": "2026-05-01T13:15:55.424Z"
     }
   ],
   "alerts": [
@@ -276,5 +343,58 @@
       "createdAt": "2026-04-10T00:00:00.000Z"
     }
   ],
-  "notifications": []
+  "notifications": [
+    {
+      "id": "cd21a3cf-cf17-406f-853b-d2ac66fc7498",
+      "toUserId": "emp-002",
+      "fromUserId": "admin-001",
+      "fromUserName": "Administrador do Sistema",
+      "type": "approval_alert",
+      "title": "Escala aprovada pelo administrador",
+      "message": "Sua escala foi aprovada por Administrador do Sistema",
+      "scheduleId": "sch-008",
+      "read": false,
+      "resolved": false,
+      "createdAt": "2026-05-01T13:08:06.370Z"
+    },
+    {
+      "id": "b2f4ffc2-7e67-49d8-b967-7e659e799a88",
+      "toUserId": "emp-002",
+      "fromUserId": "admin-001",
+      "fromUserName": "Administrador do Sistema",
+      "type": "approval_alert",
+      "title": "Escala aprovada pelo administrador",
+      "message": "Sua escala foi aprovada por Administrador do Sistema",
+      "scheduleId": "b382fec8-ef70-4ff5-bdb2-f86eb0b79a4a",
+      "read": false,
+      "resolved": false,
+      "createdAt": "2026-05-01T13:14:18.403Z"
+    },
+    {
+      "id": "225f146d-412a-4739-9048-1c0211c1f12a",
+      "toUserId": "emp-003",
+      "fromUserId": "admin-001",
+      "fromUserName": "Administrador do Sistema",
+      "type": "approval_alert",
+      "title": "Escala aprovada pelo administrador",
+      "message": "Sua escala foi aprovada por Administrador do Sistema",
+      "scheduleId": "5f9010f6-903b-4112-9c6b-d041ba1e0845",
+      "read": false,
+      "resolved": false,
+      "createdAt": "2026-05-01T13:15:24.036Z"
+    },
+    {
+      "id": "1ded1390-5d72-4799-9d29-1c1a7db86cd5",
+      "toUserId": "5f7541bf-4f93-4b73-a918-7e0179f45896",
+      "fromUserId": "admin-001",
+      "fromUserName": "Administrador do Sistema",
+      "type": "approval_alert",
+      "title": "Escala aprovada pelo administrador",
+      "message": "Sua escala foi aprovada por Administrador do Sistema",
+      "scheduleId": "21479c99-aea6-4192-bbb7-cce51e3ca035",
+      "read": false,
+      "resolved": false,
+      "createdAt": "2026-05-01T13:15:55.424Z"
+    }
+  ]
 }

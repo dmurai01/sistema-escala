@@ -348,6 +348,7 @@ class AdminPanel {
             <th>Cargo</th>
             <th>Horário</th>
             <th>Status</th>
+            <th>Aprovado por</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -359,7 +360,12 @@ class AdminPanel {
               <td>${s.position}</td>
               <td>${s.startTime} - ${s.endTime}</td>
               <td><span class="status ${this.getStatusClass(s.status)}">${this.getStatusLabel(s.status)}</span></td>
+              <td>${this.getApprovedBy(s)}</td>
               <td>
+                ${s.status === 'pending' ? `
+                  <button class="btn-icon approve-btn" data-id="${s.id}" title="Aprovar">✅</button>
+                  <button class="btn-icon reject-btn" data-id="${s.id}" title="Reprovar">❌</button>
+                ` : ''}
                 <button class="btn-icon edit-btn" data-id="${s.id}">✏️</button>
                 <button class="btn-icon delete-btn" data-id="${s.id}">🗑️</button>
               </td>
@@ -373,6 +379,14 @@ class AdminPanel {
   }
 
   bindScheduleTableActions() {
+    document.querySelectorAll('#schedulesTable .approve-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => this.approveSchedule(e.target.dataset.id));
+    });
+
+    document.querySelectorAll('#schedulesTable .reject-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => this.openRejectModal(e.target.dataset.id));
+    });
+
     document.querySelectorAll('#schedulesTable .edit-btn').forEach(btn => {
       btn.addEventListener('click', (e) => this.editSchedule(e.target.dataset.id));
     });
@@ -380,6 +394,42 @@ class AdminPanel {
     document.querySelectorAll('#schedulesTable .delete-btn').forEach(btn => {
       btn.addEventListener('click', (e) => this.deleteSchedule(e.target.dataset.id));
     });
+  }
+
+  async approveSchedule(id) {
+    if (!confirm('Tem certeza que deseja APPROVAR esta escala?')) {
+      return;
+    }
+
+    try {
+      const result = await api.approveSchedule(id);
+      alert('Escala aprovada com sucesso!');
+      await this.loadData();
+    } catch (error) {
+      alert('Erro ao aprovar escala: ' + (error.message || 'Erro desconhecido'));
+    }
+  }
+
+  openRejectModal(id) {
+    const reason = prompt('Digite o motivo da reprovação (mínimo 20 caracteres):');
+    if (!reason) return;
+    
+    if (reason.length < 20) {
+      alert('O motivo deve ter pelo menos 20 caracteres.');
+      return;
+    }
+
+    this.rejectSchedule(id, reason);
+  }
+
+  async rejectSchedule(id, reason) {
+    try {
+      const result = await api.rejectSchedule(id, reason);
+      alert('Escala reprovada com sucesso!');
+      await this.loadData();
+    } catch (error) {
+      alert('Erro ao reprovar escala: ' + (error.message || 'Erro desconhecido'));
+    }
   }
 
   renderUsersTable() {
@@ -770,6 +820,22 @@ class AdminPanel {
       general: 'Geral'
     };
     return labels[role] || role;
+  }
+
+  getApprovedBy(schedule) {
+    if (schedule.status === 'pending') {
+      return '-';
+    }
+    
+    if (schedule.status === 'approved') {
+      return schedule.approvedByName || schedule.approvedBy || 'Aprovado';
+    }
+    
+    if (schedule.status === 'rejected') {
+      return schedule.rejectedByName || schedule.rejectedBy || 'Reprovado';
+    }
+    
+    return '-';
   }
 
   getAlertTypeLabel(type) {
