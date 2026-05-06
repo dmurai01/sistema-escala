@@ -157,6 +157,12 @@ a:hover {
   opacity: 1;
 }
 
+.read-indicator {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-style: italic;
+}
+
 /* ===== Forms ===== */
 input, select, textarea {
   font-family: var(--font-primary);
@@ -233,6 +239,12 @@ label {
 .status-rejected {
   background: rgba(239, 68, 68, 0.15);
   color: var(--danger);
+}
+
+/* Classe específica para escalas pendentes - mais destacada */
+.schedule-pending {
+  border-left: 3px solid var(--warning);
+  background: rgba(234, 179, 8, 0.08);
 }
 
 /* ===== Login Page ===== */
@@ -652,6 +664,10 @@ label {
   transition: background var(--transition-fast);
 }
 
+.calendar-day.schedule-pending {
+  background: rgba(234, 179, 8, 0.08);
+}
+
 .calendar-day:nth-child(7n) {
   border-right: none;
 }
@@ -708,6 +724,13 @@ label {
   flex-direction: column;
   align-items: flex-start;
   gap: 0.125rem;
+}
+
+.schedule-chip.schedule-pending,
+.day-chip.schedule-pending,
+.calendar-day.schedule-pending {
+  background: rgba(234, 179, 8, 0.12);
+  border: 1px solid rgba(234, 179, 8, 0.3);
 }
 
 .chip-name {

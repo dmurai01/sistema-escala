@@ -107,7 +107,9 @@ class EmployeePanel {
   async loadData() {
     try {
       const schedules = await api.getSchedules();
-      this.schedules = schedules;
+      const user = auth.getCurrentUser();
+      // Filtrar apenas as escalas do usuário logado
+      this.schedules = schedules.filter(s => s.employeeId === user.id);
       
       this.renderUpcomingSchedules();
       this.renderHistorySchedules();

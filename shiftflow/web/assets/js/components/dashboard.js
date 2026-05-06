@@ -84,7 +84,12 @@ class Dashboard {
     });
 
     document.getElementById('notificationBtn').addEventListener('click', () => {
-      window.location.hash = '#/admin/notifications';
+      const user = auth.getCurrentUser();
+      if (user.role === 'admin') {
+        window.location.hash = '#/admin/notifications';
+      } else {
+        window.location.hash = '#/my-schedules';
+      }
     });
   }
 
@@ -112,27 +117,23 @@ class Dashboard {
 
   renderTodaySchedules() {
     const today = new Date().toISOString().split('T')[0];
-    const todaySchedules = this.schedules.filter(s => s.date === today);
     const user = auth.getCurrentUser();
-
+    const todaySchedules = this.schedules.filter(s => s.date === today && s.status !== 'rejected');
     const container = document.getElementById('todaySchedules');
-    
     if (todaySchedules.length === 0) {
       container.innerHTML = '<div class="empty-state">Nenhuma escala para hoje</div>';
       return;
     }
-
     // Ordena as escalas por horário de entrada
     const sortedSchedules = [...todaySchedules].sort((a, b) => {
       return a.startTime.localeCompare(b.startTime);
     });
-
     container.innerHTML = sortedSchedules.map(schedule => {
       const isOwn = schedule.employeeId === user.id;
       const statusClass = this.getStatusClass(schedule.status);
-      
+      const isPending = schedule.status === 'pending';
       return `
-        <div class="schedule-card ${isOwn ? 'own-schedule' : ''}">
+        <div class="schedule-card ${isOwn ? 'own-schedule' : ''} ${isPending ? 'schedule-pending' : ''}">
           <div class="schedule-header">
             <span class="employee-name">${schedule.employee?.name || 'Desconhecido'}</span>
             <span class="schedule-status ${statusClass}">${this.getStatusLabel(schedule.status)}</span>
@@ -153,7 +154,7 @@ class Dashboard {
     
     let html = '';
     days.forEach(day => {
-      const daySchedules = this.schedules.filter(s => s.date === day.date);
+      const daySchedules = this.schedules.filter(s => s.date === day.date && s.status !== 'rejected');
       const dayAlerts = this.alerts.filter(a => a.date === day.date);
       const hasAlert = dayAlerts.length > 0;
       const isToday = day.isToday;
@@ -166,19 +167,18 @@ class Dashboard {
             ${hasAlert ? '<span class="alert-icon">🔔</span>' : ''}
           </div>
           <div class="day-schedules">
-            ${daySchedules.length === 0 ? '<span class="no-schedule">-</span>' : 
-              daySchedules.slice(0, 3).map(s => `
-                <div class="schedule-chip" title="${s.employee?.name} - ${s.startTime} às ${s.endTime}">
-                  ${s.employee?.name?.split(' ')[0] || ''}
+            ${daySchedules.length === 0 ? '<span class="no-schedule">-</span>' :
+              daySchedules.map(s => `
+                <div class="schedule-chip schedule-info-chip ${s.status === 'pending' ? 'schedule-pending' : ''}" title="${s.employee?.name} - ${s.startTime} às ${s.endTime}">
+                  <span class="chip-name">${s.employee?.name?.split(' ')[0] || ''}</span>
+                  <span class="chip-time">${s.startTime}</span>
                 </div>
               `).join('')
             }
-            ${daySchedules.length > 3 ? `<div class="more-schedules">+${daySchedules.length - 3}</div>` : ''}
           </div>
         </div>
       `;
     });
-
     container.innerHTML = html;
   }
 
@@ -228,10 +228,17 @@ class Dashboard {
     const badge = document.getElementById('notificationBadge');
     if (!badge) return;
     
-    const unread = this.notifications ? this.notifications.filter(n => !n.read).length : 0;
-    
-    if (unread > 0) {
-      badge.textContent = unread;
+    const user = auth.getCurrentUser();
+    let count = 0;
+
+    if (user.role === 'employee') {
+      count = this.schedules ? this.schedules.filter(s => s.status === 'pending' && s.employeeId === user.id).length : 0;
+    } else {
+      count = this.notifications ? this.notifications.filter(n => !n.read).length : 0;
+    }
+
+    if (count > 0) {
+      badge.textContent = count;
       badge.style.display = 'block';
     } else {
       badge.style.display = 'none';

@@ -90,7 +90,7 @@ class AdminPanel {
 
           <div class="tab-content" id="notificationsTab" style="display: none;">
             <div class="tab-header">
-              <h2>Central de Reprovações</h2>
+              <h2>Central de Notificações</h2>
             </div>
             <div class="data-table" id="notificationsTable">
               <div class="loading">Carregando...</div>
@@ -119,11 +119,15 @@ class AdminPanel {
                 <div class="form-row">
                   <div class="form-group">
                     <label>Início</label>
-                    <input type="time" id="scheduleStartTime" step="1800" required>
+                    <select id="scheduleStartTime" required>
+                      ${this.generateTimeOptions()}
+                    </select>
                   </div>
                   <div class="form-group">
                     <label>Fim</label>
-                    <input type="time" id="scheduleEndTime" step="1800" required>
+                    <select id="scheduleEndTime" required>
+                      ${this.generateTimeOptions()}
+                    </select>
                   </div>
                 </div>
                 <div class="form-group">
@@ -528,10 +532,8 @@ class AdminPanel {
   renderNotificationsTable() {
     const container = document.getElementById('notificationsTable');
     
-    const rejectionNotifications = this.notifications.filter(n => n.type === 'rejection_alert');
-    
-    if (rejectionNotifications.length === 0) {
-      container.innerHTML = '<div class="empty-state">Nenhuma reprovação registrada</div>';
+    if (!this.notifications || this.notifications.length === 0) {
+      container.innerHTML = '<div class="empty-state">Nenhuma notificação registrada</div>';
       return;
     }
 
@@ -541,23 +543,23 @@ class AdminPanel {
           <tr>
             <th>Data</th>
             <th>De</th>
+            <th>Tipo</th>
             <th>Mensagem</th>
-            <th>Status</th>
             <th>Ações</th>
           </tr>
         </thead>
         <tbody>
-          ${rejectionNotifications.map(n => `
-            <tr>
-              <td>${this.formatDate(n.createdAt)}</td>
-              <td>${n.sender?.name || 'Desconhecido'}</td>
-              <td>${n.message}</td>
-              <td><span class="status ${n.resolved ? 'status-approved' : 'status-pending'}">${n.resolved ? 'Resolvido' : 'Pendente'}</span></td>
-              <td>
-                ${!n.resolved ? `<button class="btn-icon resolve-btn" data-id="${n.id}">✓</button>` : ''}
-              </td>
-            </tr>
-          `).join('')}
+          ${this.notifications.map(n => `
+              <tr>
+                <td>${this.formatDate(n.createdAt)}</td>
+                <td>${n.sender?.name || 'Sistema'}</td>
+                <td>${this.getNotificationTypeLabel(n.type)}</td>
+                <td>${n.message}</td>
+                <td>
+                  ${!n.read ? `<button class="btn-icon clear-btn" data-id="${n.id}" title="Marcar como lida">🗑️</button>` : '<span class="read-indicator">Lida</span>'}
+                </td>
+              </tr>
+            `).join('')}
         </tbody>
       </table>
     `;
@@ -566,8 +568,8 @@ class AdminPanel {
   }
 
   bindNotificationsTableActions() {
-    document.querySelectorAll('#notificationsTable .resolve-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => this.resolveNotification(e.target.dataset.id));
+    document.querySelectorAll('#notificationsTable .clear-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => this.markNotificationRead(e.target.dataset.id));
     });
   }
 
@@ -577,11 +579,24 @@ class AdminPanel {
     document.getElementById('scheduleId').value = schedule?.id || '';
     document.getElementById('scheduleEmployee').value = schedule?.employeeId || '';
     document.getElementById('scheduleDate').value = schedule?.date || '';
-    
-    // Define valores padrão com minutos 00 ou 30 para novas escalas
-    const defaultStartTime = schedule?.startTime || this.getDefaultTime();
-    const defaultEndTime = schedule?.endTime || this.getDefaultTime(1);
-    
+
+    // Ajusta para o valor mais próximo de 00 ou 30 minutos
+    function roundToNearest30(timeStr) {
+      if (!timeStr) return '';
+      const [h, m] = timeStr.split(':').map(Number);
+      let minutes = m;
+      if (minutes < 15) minutes = 0;
+      else if (minutes < 45) minutes = 30;
+      else {
+        minutes = 0;
+        if (h < 23) return `${String(h+1).padStart(2,'0')}:00`;
+      }
+      return `${String(h).padStart(2,'0')}:${String(minutes).padStart(2,'0')}`;
+    }
+
+    const defaultStartTime = schedule?.startTime ? roundToNearest30(schedule.startTime) : this.getDefaultTime();
+    const defaultEndTime = schedule?.endTime ? roundToNearest30(schedule.endTime) : this.getDefaultTime(1);
+
     document.getElementById('scheduleStartTime').value = defaultStartTime;
     document.getElementById('scheduleEndTime').value = defaultEndTime;
     document.getElementById('schedulePosition').value = schedule?.position || '';
@@ -596,6 +611,18 @@ class AdminPanel {
     let hours = now.getHours();
     const minutes = now.getMinutes() < 30 ? 0 : 30;
     return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+  }
+
+  // Gera opções de horário de 30 em 30 minutos
+  generateTimeOptions() {
+    const options = [];
+    for (let h = 0; h < 24; h++) {
+      for (let m = 0; m < 60; m += 30) {
+        const time = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+        options.push(`<option value="${time}">${time}</option>`);
+      }
+    }
+    return options.join('');
   }
 
   editSchedule(id) {
@@ -762,6 +789,16 @@ class AdminPanel {
     }
   }
 
+  async markNotificationRead(id) {
+    try {
+      await api.markNotificationRead(id);
+      this.showToast('Notificação marcada como lida');
+      await this.loadData();
+    } catch (error) {
+      this.showToast('Erro: ' + error.message, 'error');
+    }
+  }
+
   // Export/Import
   async exportData() {
     try {
@@ -803,10 +840,32 @@ class AdminPanel {
 
   formatDate(dateStr) {
     if (!dateStr) return '';
-    const date = new Date(dateStr + 'T00:00:00');
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
+    let normalized = dateStr;
+    if (typeof dateStr === 'string') {
+      normalized = dateStr.replace(' ', 'T');
+      if (!normalized.includes('T')) {
+        normalized += 'T00:00:00';
+      }
+    }
+    const date = new Date(normalized);
+    if (isNaN(date.getTime())) return dateStr;
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     return `${day}/${month}`;
+  }
+
+  getNotificationStatusLabel(notification) {
+    if (notification.resolved) return 'Resolvido';
+    if (notification.type === 'approval_alert') return 'Aprovado';
+    if (notification.type === 'rejection_alert') return 'Reprovado';
+    return 'Pendente';
+  }
+
+  getNotificationStatusClass(notification) {
+    if (notification.resolved) return 'status-approved';
+    if (notification.type === 'approval_alert') return 'status-approved';
+    if (notification.type === 'rejection_alert') return 'status-rejected';
+    return 'status-pending';
   }
 
   getStatusClass(status) {
@@ -825,6 +884,16 @@ class AdminPanel {
       rejected: 'Reprovado'
     };
     return labels[status] || status;
+  }
+
+  getNotificationTypeLabel(type) {
+    const labels = {
+      rejection_alert: 'Reprovação',
+      approval_alert: 'Aprovação',
+      schedule_alert: 'Escala',
+      system_alert: 'Sistema'
+    };
+    return labels[type] || type;
   }
 
   getRoleLabel(role) {

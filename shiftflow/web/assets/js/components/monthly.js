@@ -108,6 +108,15 @@ class MonthlyView {
       this.render();
     });
 
+    document.getElementById('notificationBtn').addEventListener('click', () => {
+      const user = auth.getCurrentUser();
+      if (user.role === 'admin') {
+        window.location.hash = '#/admin/notifications';
+      } else {
+        window.location.hash = '#/my-schedules';
+      }
+    });
+
     document.getElementById('backBtn').addEventListener('click', () => {
       window.location.hash = '#/dashboard';
     });
@@ -125,6 +134,7 @@ class MonthlyView {
     try {
       const year = this.currentDate.getFullYear();
       const month = this.currentDate.getMonth() + 1;
+      const user = auth.getCurrentUser();
 
       const [schedules, alerts, users] = await Promise.all([
         api.getSchedules({ year, month }),
@@ -136,8 +146,13 @@ class MonthlyView {
       this.alerts = alerts;
       this.users = users;
 
+      if (user.role === 'admin') {
+        this.notifications = await api.getNotifications();
+      }
+
       this.renderEmployeeFilter();
       this.renderCalendar();
+      this.updateNotificationBadge();
     } catch (error) {
       console.error('Erro ao carregar dados:', error);
     }
@@ -145,17 +160,11 @@ class MonthlyView {
 
   renderEmployeeFilter() {
     const select = document.getElementById('employeeFilter');
-    const currentUser = auth.getCurrentUser();
-    
-    // Se for employee, mostra apenas ele mesmo
-    if (currentUser.role === 'employee') {
-      select.innerHTML = `<option value="${currentUser.id}">${currentUser.name}</option>`;
-      select.value = currentUser.id;
-      select.disabled = true;
-    } else {
-      select.innerHTML = '<option value="">Todos</option>' +
-        this.users.map(u => `<option value="${u.id}">${u.name}</option>`).join('');
-    }
+    // Sempre mostra a opção "Todos" e todos os funcionários, independente do papel
+    select.innerHTML = '<option value="">Todos</option>' +
+      this.users.map(u => `<option value="${u.id}">${u.name}</option>`).join('');
+    // Não selecionar automaticamente apenas o usuário logado para que employee veja todas as escalas
+    select.value = '';
   }
 
   renderCalendar() {
@@ -180,7 +189,7 @@ class MonthlyView {
     // Dias do mês
     for (let day = 1; day <= daysInMonth; day++) {
       const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-      const daySchedules = this.schedules.filter(s => s.date === dateStr);
+      const daySchedules = this.schedules.filter(s => s.date === dateStr && s.status !== 'rejected');
       const dayAlerts = this.alerts.filter(a => a.date === dateStr);
       
       // Filtra por funcionário se selecionado
@@ -191,19 +200,19 @@ class MonthlyView {
       const isToday = dateStr === new Date().toISOString().split('T')[0];
       const hasOwnSchedule = daySchedules.some(s => s.employeeId === currentUser.id);
       const hasAlert = dayAlerts.length > 0;
+      const hasPending = filteredSchedules.some(s => s.status === 'pending');
 
       html += `
-        <div class="calendar-day ${isToday ? 'today' : ''} ${hasOwnSchedule ? 'own-schedule' : ''}" 
+        <div class="calendar-day ${isToday ? 'today' : ''} ${hasOwnSchedule ? 'own-schedule' : ''} ${hasPending ? 'schedule-pending' : ''}" 
              data-date="${dateStr}">
           <span class="day-number">${day}</span>
           <div class="day-chips">
-            ${filteredSchedules.slice(0, 3).map(s => `
-              <div class="day-chip schedule-info-chip" title="${s.employee?.name} - ${s.startTime} às ${s.endTime}">
+            ${filteredSchedules.map(s => `
+              <div class="day-chip schedule-info-chip ${s.status === 'pending' ? 'schedule-pending' : ''}" title="${s.employee?.name} - ${s.startTime} às ${s.endTime}">
                 <span class="chip-name">${this.getFirstName(s.employee?.name)}</span>
                 <span class="chip-time">${s.startTime}</span>
               </div>
             `).join('')}
-            ${filteredSchedules.length > 3 ? `<span class="more">+${filteredSchedules.length - 3}</span>` : ''}
           </div>
           ${hasAlert ? '<span class="alert-indicator" title="' + dayAlerts[0].title + '">🔔</span>' : ''}
         </div>
@@ -222,7 +231,7 @@ class MonthlyView {
   }
 
   async showDayDetails(dateStr) {
-    const daySchedules = this.schedules.filter(s => s.date === dateStr);
+    const daySchedules = this.schedules.filter(s => s.date === dateStr && s.status !== 'rejected');
     const dayAlerts = this.alerts.filter(a => a.date === dateStr);
     const selectedEmployee = document.getElementById('employeeFilter')?.value || '';
     
@@ -254,8 +263,9 @@ class MonthlyView {
       bodyHtml += '<div class="day-schedules"><h4>Escalas</h4>';
       filteredSchedules.forEach(schedule => {
         const statusClass = this.getStatusClass(schedule.status);
+        const isPending = schedule.status === 'pending';
         bodyHtml += `
-          <div class="schedule-item">
+          <div class="schedule-item ${isPending ? 'schedule-pending' : ''}">
             <div class="schedule-info">
               <strong>${schedule.employee?.name || 'Desconhecido'}</strong>
               <span>${schedule.position}</span>
@@ -293,6 +303,27 @@ class MonthlyView {
       rejected: 'Reprovado'
     };
     return labels[status] || status;
+  }
+
+  updateNotificationBadge() {
+    const badge = document.getElementById('notificationBadge');
+    if (!badge) return;
+
+    const user = auth.getCurrentUser();
+    let count = 0;
+
+    if (user.role === 'employee') {
+      count = this.schedules ? this.schedules.filter(s => s.status === 'pending' && s.employeeId === user.id).length : 0;
+    } else {
+      count = this.notifications ? this.notifications.filter(n => !n.read).length : 0;
+    }
+
+    if (count > 0) {
+      badge.textContent = count;
+      badge.style.display = 'block';
+    } else {
+      badge.style.display = 'none';
+    }
   }
 
   // Retorna o primeiro nome do funcionário

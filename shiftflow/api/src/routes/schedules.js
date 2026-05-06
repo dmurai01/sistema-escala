@@ -60,10 +60,8 @@ router.get('/', (req, res) => {
       schedules = schedules.filter(s => s.employeeId === employeeId);
     }
 
-    // Se for employee, retorna apenas suas próprias escalas
-    if (req.user.role === 'employee') {
-      schedules = schedules.filter(s => s.employeeId === req.user.id);
-    }
+    // Funcionários agora podem ver todas as escalas (visão mensal liberada)
+    // Se quiser restringir, use o filtro employeeId na query
 
     // Inclui dados do employee para cada escala
     const users = storage.getCollection('users');

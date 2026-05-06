@@ -50,7 +50,7 @@
     {
       "id": "sch-001",
       "employeeId": "emp-001",
-      "date": "2026-04-28",
+      "date": "2026-05-04",
       "startTime": "08:00",
       "endTime": "16:00",
       "position": "Atendente",
@@ -58,7 +58,7 @@
       "status": "approved",
       "rejectionReason": "",
       "createdAt": "2026-04-20T10:00:00.000Z",
-      "updatedAt": "2026-04-22T15:30:00.000Z"
+      "updatedAt": "2026-05-04T13:46:05.496Z"
     },
     {
       "id": "sch-002",
@@ -76,7 +76,7 @@
     {
       "id": "sch-003",
       "employeeId": "emp-003",
-      "date": "2026-04-29",
+      "date": "2026-05-04",
       "startTime": "08:00",
       "endTime": "16:00",
       "position": "Caixa",
@@ -84,7 +84,7 @@
       "status": "approved",
       "rejectionReason": "",
       "createdAt": "2026-04-21T09:00:00.000Z",
-      "updatedAt": "2026-04-23T10:00:00.000Z"
+      "updatedAt": "2026-05-04T13:46:13.628Z"
     },
     {
       "id": "sch-004",
@@ -170,7 +170,7 @@
     {
       "id": "sch-010",
       "employeeId": "emp-001",
-      "date": "2026-05-04",
+      "date": "2026-05-06",
       "startTime": "14:00",
       "endTime": "22:00",
       "position": "Atendente",
@@ -178,7 +178,7 @@
       "status": "pending",
       "rejectionReason": "",
       "createdAt": "2026-04-26T10:00:00.000Z",
-      "updatedAt": "2026-04-26T10:00:00.000Z"
+      "updatedAt": "2026-05-06T12:46:44.797Z"
     },
     {
       "id": "sch-011",
@@ -248,7 +248,7 @@
     {
       "id": "7782a594-e121-493c-9191-a140efad23fd",
       "employeeId": "5f7541bf-4f93-4b73-a918-7e0179f45896",
-      "date": "2026-04-30",
+      "date": "2026-05-04",
       "startTime": "14:00",
       "endTime": "01:00",
       "position": "Atendimento",
@@ -256,7 +256,7 @@
       "status": "approved",
       "rejectionReason": "",
       "createdAt": "2026-04-29T12:14:12.019Z",
-      "updatedAt": "2026-04-29T12:18:59.977Z"
+      "updatedAt": "2026-05-04T13:57:58.671Z"
     },
     {
       "id": "7513c14c-c90e-40c8-95fd-05c4907b89bd",
@@ -321,6 +321,83 @@
       "approvedBy": "admin-001",
       "approvedByName": "Administrador do Sistema",
       "approvedAt": "2026-05-01T13:15:55.424Z"
+    },
+    {
+      "id": "ced76492-42d9-430e-871c-524b0265e7cb",
+      "employeeId": "emp-003",
+      "date": "2026-05-04",
+      "startTime": "10:30",
+      "endTime": "16:30",
+      "position": "Atendimento",
+      "notes": "Teste",
+      "status": "pending",
+      "rejectionReason": "",
+      "createdAt": "2026-05-04T13:45:54.623Z",
+      "updatedAt": "2026-05-04T13:45:54.623Z"
+    },
+    {
+      "id": "6bfd6426-3f52-487e-9c0c-c089068fba93",
+      "employeeId": "5f7541bf-4f93-4b73-a918-7e0179f45896",
+      "date": "2026-05-06",
+      "startTime": "13:30",
+      "endTime": "22:30",
+      "position": "Caixa",
+      "notes": "",
+      "status": "approved",
+      "rejectionReason": "",
+      "createdAt": "2026-05-06T12:47:29.584Z",
+      "updatedAt": "2026-05-06T12:47:39.126Z",
+      "approvedBy": "admin-001",
+      "approvedByName": "Administrador do Sistema",
+      "approvedAt": "2026-05-06T12:47:39.126Z"
+    },
+    {
+      "id": "d96f2dfe-9ce6-4d69-8cc9-c7cc5bf54d47",
+      "employeeId": "5f7541bf-4f93-4b73-a918-7e0179f45896",
+      "date": "2026-05-08",
+      "startTime": "10:00",
+      "endTime": "11:00",
+      "position": "Teste",
+      "notes": "",
+      "status": "rejected",
+      "rejectionReason": "Testando reprovação e mensagem",
+      "createdAt": "2026-05-06T13:03:55.231Z",
+      "updatedAt": "2026-05-06T13:04:27.540Z",
+      "rejectedBy": "5f7541bf-4f93-4b73-a918-7e0179f45896",
+      "rejectedByName": "Daniela",
+      "rejectedAt": "2026-05-06T13:04:27.540Z"
+    },
+    {
+      "id": "5678459f-393f-4772-8f79-1348d9a35890",
+      "employeeId": "5f7541bf-4f93-4b73-a918-7e0179f45896",
+      "date": "2026-05-19",
+      "startTime": "10:00",
+      "endTime": "11:00",
+      "position": "Caixa",
+      "notes": "",
+      "status": "approved",
+      "rejectionReason": "",
+      "createdAt": "2026-05-06T13:13:01.181Z",
+      "updatedAt": "2026-05-06T13:14:02.081Z",
+      "approvedBy": "5f7541bf-4f93-4b73-a918-7e0179f45896",
+      "approvedByName": "Daniela",
+      "approvedAt": "2026-05-06T13:14:02.081Z"
+    },
+    {
+      "id": "f6970446-3ed5-435c-a185-884560a1b1ee",
+      "employeeId": "5f7541bf-4f93-4b73-a918-7e0179f45896",
+      "date": "2026-05-20",
+      "startTime": "15:00",
+      "endTime": "23:00",
+      "position": "Caixa",
+      "notes": "",
+      "status": "rejected",
+      "rejectionReason": "Reprovando dias seguidos",
+      "createdAt": "2026-05-06T13:13:24.932Z",
+      "updatedAt": "2026-05-06T13:14:18.685Z",
+      "rejectedBy": "5f7541bf-4f93-4b73-a918-7e0179f45896",
+      "rejectedByName": "Daniela",
+      "rejectedAt": "2026-05-06T13:14:18.685Z"
     }
   ],
   "alerts": [
@@ -353,8 +430,8 @@
       "title": "Escala aprovada pelo administrador",
       "message": "Sua escala foi aprovada por Administrador do Sistema",
       "scheduleId": "sch-008",
-      "read": false,
-      "resolved": false,
+      "read": true,
+      "resolved": true,
       "createdAt": "2026-05-01T13:08:06.370Z"
     },
     {
@@ -395,6 +472,45 @@
       "read": false,
       "resolved": false,
       "createdAt": "2026-05-01T13:15:55.424Z"
+    },
+    {
+      "id": "1f1010a5-0689-4373-9454-e7028d131265",
+      "toUserId": "5f7541bf-4f93-4b73-a918-7e0179f45896",
+      "fromUserId": "admin-001",
+      "fromUserName": "Administrador do Sistema",
+      "type": "approval_alert",
+      "title": "Escala aprovada pelo administrador",
+      "message": "Sua escala foi aprovada por Administrador do Sistema",
+      "scheduleId": "6bfd6426-3f52-487e-9c0c-c089068fba93",
+      "read": false,
+      "resolved": false,
+      "createdAt": "2026-05-06T12:47:39.127Z"
+    },
+    {
+      "id": "bfe66752-4bcc-4d25-ae31-fe766184eacf",
+      "fromUserId": "5f7541bf-4f93-4b73-a918-7e0179f45896",
+      "fromUserName": "Daniela",
+      "type": "rejection_alert",
+      "message": "Escala reprovada por Daniela: Testando reprovação e mensagem",
+      "scheduleId": "d96f2dfe-9ce6-4d69-8cc9-c7cc5bf54d47",
+      "read": false,
+      "resolved": false,
+      "createdAt": "2026-05-06T13:04:27.542Z",
+      "toUserId": "admin-001",
+      "title": "Escala reprovada por funcionário"
+    },
+    {
+      "id": "300f1b7c-9c42-4523-8790-dba27145f3ae",
+      "fromUserId": "5f7541bf-4f93-4b73-a918-7e0179f45896",
+      "fromUserName": "Daniela",
+      "type": "rejection_alert",
+      "message": "Escala reprovada por Daniela: Reprovando dias seguidos",
+      "scheduleId": "f6970446-3ed5-435c-a185-884560a1b1ee",
+      "read": false,
+      "resolved": false,
+      "createdAt": "2026-05-06T13:14:18.686Z",
+      "toUserId": "admin-001",
+      "title": "Escala reprovada por funcionário"
     }
   ]
 }

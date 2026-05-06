@@ -30,7 +30,7 @@ router.use(authMiddleware);
  *       200:
  *         description: Lista de usuários
  */
-router.get('/', requireRole('admin'), (req, res) => {
+router.get('/', (req, res) => {
   try {
     const users = storage.getCollection('users');
     const usersWithoutPassword = users.map(user => ({
